@@ -16,17 +16,17 @@ spring:
           uri: lb://product-service
           predicates:
             - Path=/products/**
-      default-filters:
-        - name: DedupeResponseHeader
-          args:
-            Access-Control-Allow-Credentials: RETAIN_FIRST
-            Access-Control-Allow-Origin: RETAIN_FIRST
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods: "*"
-            allowedHeaders: "*"
+      # default-filters:
+      #   - name: DedupeResponseHeader
+      #     args:
+      #       Access-Control-Allow-Credentials: RETAIN_FIRST
+      #       Access-Control-Allow-Origin: RETAIN_FIRST
+      # globalcors:
+      #   corsConfigurations:
+      #     '[/**]':
+      #       allowedOrigins: "*"
+      #       allowedMethods: "*"
+      #       allowedHeaders: "*"
 
 eureka:
   client:
