@@ -1,9 +1,10 @@
-server:
-  port: 0 # optional: picks free port automatically
-
 spring:
   application:
     name: auth-service
+
+  config:
+    activate:
+      on-profile: dev
 
   datasource:
     url: jdbc:mysql://localhost:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true
@@ -14,17 +15,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  profiles:
-    active: dev
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+server:
+  port: 0
 
 eureka:
   client:
@@ -34,3 +27,12 @@ eureka:
     prefer-ip-address: true
     health-check-url-path: /actuator/health
     status-page-url-path: /actuator/info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
