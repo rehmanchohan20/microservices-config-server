@@ -1,33 +1,40 @@
 server:
-  port: 0 # optional: picks free port automatically
+  port: 8080
 
 spring:
   application:
-    name: auth-service
+    name: api-gateway
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+  cloud:
+    gateway:
+      routes:
+        - id: auth
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+        - id: products
+          uri: lb://product-service
+          predicates:
+            - Path=/products/**
+      default-filters:
+        - name: DedupeResponseHeader
+          args:
+            Access-Control-Allow-Credentials: RETAIN_FIRST
+            Access-Control-Allow-Origin: RETAIN_FIRST
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
   instance:
     prefer-ip-address: true
     health-check-url-path: /actuator/health
